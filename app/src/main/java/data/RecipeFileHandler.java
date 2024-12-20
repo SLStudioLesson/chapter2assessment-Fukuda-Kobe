@@ -1,7 +1,9 @@
 package data;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -24,11 +26,11 @@ public class RecipeFileHandler {
      * @return レシピデータ
      */
 
-    ArrayList<String> rowDate = new ArrayList<>();
-    String line;
-
+    
     public ArrayList<String> readRecipes() {
+        ArrayList<String> rowDate = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
             while ((line = reader.readLine()) != null) {
                 rowDate.add(line);
             }
@@ -47,12 +49,18 @@ public class RecipeFileHandler {
      * @param recipeName レシピ名
      * @param ingredients 材料名
      */
-     // 
+     //
     public void addRecipe(String recipeName, String ingredients) {
-        // try {
+        // データのフォーマット
+        String input = recipeName + "," + ingredients;
 
-        // } catch (IOException e) {
-
-        // }
+        // 新規のファイル作成と、書き込み
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+            writer.newLine();
+            writer.write(input);
+            System.out.println("Recipe added successfully.");
+        } catch (IOException e) {
+                e.printStackTrace();
+        }
     }
 }
